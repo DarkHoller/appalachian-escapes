@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>The Huxley Ledger — Backup Hints</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --wood-dark:#18120d;
+    --wood-mid:#241a13;
+    --wood-card:#2a1f16;
+    --wood-line:#42311f;
+    --parchment:#efe3c8;
+    --parchment-dim:#e2d3ab;
+    --brass:#c9a24d;
+    --brass-bright:#e6c477;
+    --brass-dim:#6e5729;
+    --copper:#b06a3f;
+    --copper-dim:#6b4226;
+    --oxblood:#8a2f27;
+    --oxblood-bright:#c0453a;
+    --verdigris:#5f7f70;
+    --ink:#ecdfc0;
+    --ink-dim:#a9987a;
+    --ink-faint:#7a6b52;
+    --shadow:rgba(0,0,0,.55);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+  }
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at 50% -10%, #2c2115 0%, var(--wood-dark) 55%),
+      repeating-linear-gradient(90deg, rgba(0,0,0,.15) 0 2px, transparent 2px 90px);
+    color:var(--ink);
+    font-family:'Lora', Georgia, serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:64px;
+  }
+
+  a{color:var(--brass-bright);}
+
+  ::selection{background:var(--brass-dim); color:var(--parchment);}
+
+  :focus-visible{
+    outline:2px solid var(--brass-bright);
+    outline-offset:3px;
+    border-radius:3px;
+  }
+
+  .mono{font-family:'Space Mono', monospace; letter-spacing:.03em;}
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding:10px 16px;
+    background:var(--wood-mid);
+    border-bottom:1px solid var(--wood-line);
+    font-family:'Space Mono', monospace;
+    font-size:12.5px;
+    color:var(--ink-dim);
+    text-align:center;
+  }
+  .topbar strong{color:var(--brass-bright); font-weight:700;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    max-width:640px;
+    margin:36px auto 8px;
+    padding:0 20px;
+    text-align:center;
+  }
+  .frame{
+    position:relative;
+    padding:28px 20px 24px;
+    border:1px solid var(--brass-dim);
+    background:linear-gradient(180deg, rgba(201,162,77,.06), transparent 40%);
+  }
+  .frame::before,
+  .frame::after,
+  .frame .fc-tl, .frame .fc-tr, .frame .fc-bl, .frame .fc-br{
+    content:"";
+    position:absolute;
+    width:22px; height:22px;
+    border:2px solid var(--brass);
+  }
+  .frame .fc-tl{top:-1px; left:-1px; border-right:none; border-bottom:none;}
+  .frame .fc-tr{top:-1px; right:-1px; border-left:none; border-bottom:none;}
+  .frame .fc-bl{bottom:-1px; left:-1px; border-right:none; border-top:none;}
+  .frame .fc-br{bottom:-1px; right:-1px; border-left:none; border-top:none;}
+
+  .eyebrow{
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    color:var(--copper);
+    margin:0 0 10px;
+  }
+  h1{
+    font-family:'Cinzel', serif;
+    font-weight:600;
+    font-size:clamp(28px,6vw,40px);
+    margin:0 0 12px;
+    color:var(--brass-bright);
+    text-shadow:0 2px 0 rgba(0,0,0,.4);
+  }
+  .hero p{
+    color:var(--parchment-dim);
+    font-size:15.5px;
+    margin:0 auto;
+    max-width:46ch;
+  }
+  .hero .sig{
+    display:block;
+    margin-top:14px;
+    font-style:italic;
+    color:var(--ink-dim);
+    font-size:14px;
+  }
+
+  .call-alison{
+    max-width:640px;
+    margin:18px auto 0;
+    padding:0 20px;
+  }
+  .call-alison a.btn{
+    display:block;
+    text-decoration:none;
+    text-align:center;
+    padding:11px 14px;
+    border:1px solid var(--brass-dim);
+    color:var(--brass-bright);
+    font-family:'Space Mono', monospace;
+    font-size:13px;
+    letter-spacing:.04em;
+    background:rgba(201,162,77,.05);
+    transition:background .15s ease, border-color .15s ease;
+  }
+  .call-alison a.btn:hover{background:rgba(201,162,77,.12); border-color:var(--brass);}
+
+  /* ---------- Sticky station nav ---------- */
+  .nav-wrap{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:rgba(24,18,13,.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--wood-line);
+    margin-top:28px;
+  }
+  .nav-scroll{
+    max-width:900px;
+    margin:0 auto;
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    padding:10px 16px;
+    scrollbar-width:none;
+  }
+  .nav-scroll::-webkit-scrollbar{display:none;}
+  .nav-tab{
+    flex:0 0 auto;
+    width:34px; height:34px;
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--wood-line);
+    background:var(--wood-card);
+    color:var(--ink-dim);
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    cursor:pointer;
+    transition:all .15s ease;
+    border-radius:2px;
+  }
+  .nav-tab:hover{border-color:var(--brass-dim); color:var(--brass-bright);}
+  .nav-tab.done{border-color:var(--copper-dim); color:var(--copper); background:rgba(176,106,63,.08);}
+
+  /* ---------- Main ---------- */
+  main{max-width:640px; margin:0 auto; padding:26px 16px 0;}
+
+  .area-heading{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:38px 0 16px;
+    color:var(--copper);
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    letter-spacing:.24em;
+    text-transform:uppercase;
+  }
+  .area-heading::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:linear-gradient(90deg, var(--wood-line), transparent);
+  }
+  main > .area-heading:first-child{margin-top:0;}
+
+  /* ---------- Station card ---------- */
+  .station{
+    border:1px solid var(--wood-line);
+    background:var(--wood-card);
+    margin-bottom:14px;
+    scroll-margin-top:64px;
+  }
+  .station.finale{
+    border-color:var(--oxblood-bright);
+    box-shadow:0 0 0 1px rgba(138,47,39,.25), 0 12px 30px -14px rgba(138,47,39,.5);
+  }
+
+  .station-head{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    width:100%;
+    padding:16px 16px;
+    background:none;
+    border:none;
+    text-align:left;
+    color:inherit;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .num{
+    flex:0 0 auto;
+    width:38px; height:38px;
+    border:1px solid var(--brass-dim);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Mono', monospace;
+    font-size:13px;
+    color:var(--brass);
+  }
+  .station.finale .num{border-color:var(--oxblood-bright); color:var(--oxblood-bright);}
+
+  .head-text{flex:1; min-width:0;}
+  .head-text h3{
+    font-family:'Cinzel', serif;
+    font-weight:600;
+    font-size:17px;
+    margin:0 0 3px;
+    color:var(--parchment);
+  }
+  .head-text p{margin:0; font-size:13.5px; color:var(--ink-faint); font-style:italic;}
+
+  .chev{
+    flex:0 0 auto;
+    color:var(--ink-faint);
+    font-size:14px;
+    margin-top:10px;
+    transition:transform .2s ease;
+  }
+  .station.open .chev{transform:rotate(180deg); color:var(--brass);}
+
+  .station-body{
+    display:none;
+    padding:2px 16px 20px;
+    border-top:1px solid var(--wood-line);
+  }
+  .station.open .station-body{display:block;}
+
+  /* Gauge */
+  .gauge{
+    display:flex;
+    gap:6px;
+    margin:16px 0 4px;
+  }
+  .tier-btn{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:5px;
+    padding:9px 4px 8px;
+    border:1px solid var(--wood-line);
+    background:rgba(0,0,0,.15);
+    color:var(--ink-faint);
+    cursor:pointer;
+    font-family:'Space Mono', monospace;
+    transition:all .15s ease;
+  }
+  .tier-btn .lamp{
+    width:8px; height:8px;
+    border-radius:50%;
+    background:var(--wood-line);
+  }
+  .tier-btn .label{font-size:10.5px; letter-spacing:.14em;}
+  .tier-btn .sub{font-size:9.5px; color:var(--ink-faint); font-style:italic; font-family:'Lora',serif;}
+
+  .tier-btn[data-state="locked"]{cursor:not-allowed; opacity:.45;}
+  .tier-btn[data-state="ready"]{
+    border-color:var(--brass);
+    color:var(--brass-bright);
+    animation:pulse 2.2s ease-in-out infinite;
+  }
+  .tier-btn[data-state="ready"] .lamp{background:var(--brass-bright); box-shadow:0 0 8px var(--brass-bright);}
+  .tier-btn[data-state="ready"]:hover{background:rgba(201,162,77,.12);}
+  .tier-btn[data-state="done"]{border-color:var(--copper-dim); color:var(--copper);}
+  .tier-btn[data-state="done"] .lamp{background:var(--copper);}
+
+  .tier-btn.answer[data-state="ready"]{border-color:var(--oxblood-bright); color:var(--oxblood-bright);}
+  .tier-btn.answer[data-state="ready"] .lamp{background:var(--oxblood-bright); box-shadow:0 0 8px var(--oxblood-bright);}
+  .tier-btn.answer[data-state="done"]{border-color:var(--oxblood); color:var(--oxblood-bright); background:rgba(138,47,39,.12);}
+  .tier-btn.answer[data-state="done"] .lamp{background:var(--oxblood-bright);}
+
+  @keyframes pulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(201,162,77,.0);}
+    50%{box-shadow:0 0 0 3px rgba(201,162,77,.12);}
+  }
+
+  .reveals{margin-top:14px; display:flex; flex-direction:column; gap:10px;}
+  .reveal-item{
+    background:var(--parchment);
+    color:#2a2013;
+    padding:12px 14px;
+    border-left:3px solid var(--copper);
+    font-size:15px;
+    animation:slidein .35s ease;
+  }
+  .reveal-item.is-answer{border-left-color:var(--oxblood); background:#f2e6cc;}
+  .reveal-item .tier-tag{
+    display:block;
+    font-family:'Space Mono', monospace;
+    font-size:10px;
+    letter-spacing:.16em;
+    color:var(--copper-dim);
+    margin-bottom:5px;
+  }
+  .reveal-item.is-answer .tier-tag{color:var(--oxblood);}
+  .reveal-item strong{color:#1c1710;}
+
+  @keyframes slidein{
+    from{opacity:0; transform:translateY(-4px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  .reset-link{
+    display:inline-block;
+    margin-top:12px;
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    color:var(--ink-faint);
+    background:none;
+    border:none;
+    cursor:pointer;
+    text-decoration:underline;
+    padding:0;
+  }
+  .reset-link:hover{color:var(--brass-bright);}
+
+  footer{
+    max-width:640px;
+    margin:48px auto 0;
+    padding:24px 20px 0;
+    border-top:1px solid var(--wood-line);
+    text-align:center;
+    color:var(--ink-faint);
+    font-family:'Space Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:.04em;
+  }
+  footer .cat{opacity:.5; margin-bottom:8px;}
+</style>
+</head>
+<body>
+
+  <div class="topbar">☎ Text <strong>(330) 248-4446</strong> first — this is only here for when Alison's slow to answer.</div>
+
+  <div class="hero">
+    <div class="frame">
+      <span class="fc-tl"></span><span class="fc-tr"></span><span class="fc-bl"></span><span class="fc-br"></span>
+      <p class="eyebrow">Huxley House · Field Copy</p>
+      <h1>The Huxley Ledger</h1>
+      <p>Hi — it's Alison. If I'm slow to text back, here's everything I'd tell you anyway, organized by room. Work each one top to bottom: a nudge first, the answer last.</p>
+      <span class="sig">— A. H-M.</span>
+    </div>
+  </div>
+
+  <div class="call-alison">
+    <a class="btn" href="sms:+13302484446">Text Alison instead →</a>
+  </div>
+
+  <div class="nav-wrap">
+    <div class="nav-scroll" id="navScroll"></div>
+  </div>
+
+  <main id="stationsMount"></main>
+
+  <footer>
+    <div class="cat">🐈‍⬛</div>
+    Appalachian Escapes — Huxley House<br>
+    Copernicus approves of thorough note-taking.
+  </footer>
+
+<script>
+const TIERS = [
+  {key:'small',  label:'SMALL',  sub:'a nudge'},
+  {key:'medium', label:'MEDIUM', sub:'a clue'},
+  {key:'big',    label:'BIG',    sub:'basically it'},
+  {key:'answer', label:'ANSWER', sub:'just tell me'},
+];
+
+const STATIONS = [
+  {
+    area:'Main Floor',
+    num:'01', title:'The Portraits', teaser:'Five faces around the house, each hiding something.',
+    hints:{
+      small:"That packet has character cards and an order card. Each card's little object matches something painted on one of the portraits around the house — start by matching them up.",
+      medium:"Once you know who's who, look closely for a small silver number hidden in each painting. Move around — it catches the light at an angle. Photos never show it as well as your own eyes will.",
+      big:"Leith's is in the hair curls; Copernicus's is on a front leg; William's is in the beard. Robin's is <strong>inside the gear on the hat</strong> — not the hair. Emery's is in the <strong>collar</strong>, not the goggles. Then read them in the order card's order: Leith, Copernicus, William, Robin, Emery.",
+      answer:"The code is <strong>84607</strong>."
+    }
+  },
+  {
+    area:'Main Floor',
+    num:'02', title:'The Secretary Desk', teaser:'A locked lid in the master bedroom.',
+    hints:{
+      small:"The secretary desk in the master bedroom takes the five numbers you just found — it's the lock on the hinged lid.",
+      medium:"Under the doily is a letter from William with a Morse message. Use the Morse chart hanging on the wall right above that desk — William's own chart, not one off the internet.",
+      big:"It's <strong>American</strong> Morse, which is different from what your phone will show you — L is one long dash. Decode it into a five-letter word.",
+      answer:"It spells <strong>DIALS</strong> — that's the word for the letter lock on the painting."
+    }
+  },
+  {
+    area:'Main Floor',
+    num:'03', title:'The Painting & Maze', teaser:"A painting on the wall isn't just decoration.",
+    hints:{
+      small:"Set the letter lock on the train painting to the word from the Morse.",
+      medium:"The painting swings open — there's a maze behind it.",
+      big:"Work the key through the maze channels and free it at the opening.",
+      answer:"The maze gives you a key — take it to the padlocked bottom drawer in the kitchen."
+    }
+  },
+  {
+    area:'Main Floor',
+    num:'04', title:'The Kitchen Drawer', teaser:"Something's locked in the kitchen island.",
+    hints:{
+      small:"The maze key opens a padlock — look for the padlocked bottom drawer in the kitchen.",
+      medium:"Inside is a rope with a magnet and a note from Robin. Read the note.",
+      big:"Take the rope and magnet upstairs to the attic pipe and drop the magnet end down it.",
+      answer:"Fish up whatever the magnet catches in the pipe."
+    }
+  },
+  {
+    area:'Main Floor',
+    num:'05', title:'The Attic Pipe', teaser:"There's a pipe running down from the attic.",
+    hints:{
+      small:"Drop the magnet end down the attic pipe.",
+      medium:"It'll catch something — reel it up slowly.",
+      big:"It's a painted gear banner. Bring it to the countertop. (If the magnet's stuck on the stairs — it's strong and grabs the metal stairs/rebar, just tug it free.)",
+      answer:"The banner is the key to reading the countertop chains."
+    }
+  },
+  {
+    area:'Main Floor',
+    num:'06', title:'The Countertop', teaser:"The kitchen counter has more going on than it looks.",
+    hints:{
+      small:"That banner isn't decoration — it tells you how to read the countertop. Notice First / Second / Third and the mention of chains.",
+      medium:"Three little chains run across the counter — top, bottom, center. Follow them in the banner's order: top first, bottom second, center third.",
+      big:"Ignore everything mid-chain — only the number where each chain <strong>ends</strong> counts. Trace each one all the way to its end.",
+      answer:"Top ends at 7, bottom at 8, center at 24 → <strong>7824</strong>."
+    }
+  },
+  {
+    area:'Main Floor',
+    num:'07', title:'The Dresser', teaser:"A small dresser in the second bedroom.",
+    hints:{
+      small:"Enter 7824 on the dresser's top drawer.",
+      medium:"Inside is a little wooden disc with a three-leaf shape, plus a letter and a sketch. Look at the sketch.",
+      big:"The sketch shows the disc going into a matching recess on the wardrobe — the wardrobe's in that same bedroom.",
+      answer:"Seat the trefoil disc into the three-leaf recess on the wardrobe door."
+    }
+  },
+  {
+    area:'Main Floor',
+    num:'08', title:'The Wardrobe', teaser:"An old wardrobe that isn't just for clothes.",
+    hints:{
+      small:"The trefoil disc goes into the wardrobe in that same room.",
+      medium:"Seat it into the matching recess — the wardrobe opens.",
+      big:"There's a ladder down to the basement. Don't want to climb? Go out the front, down the steps, to the basement door on the right side of the house — code <strong>1902</strong>. And press the mains-feed button before you go down.",
+      answer:"Head down to the basement workshop."
+    }
+  },
+  {
+    area:'Basement Workshop',
+    num:'09', title:'The Radio', teaser:"An old radio down in the basement workshop.",
+    hints:{
+      small:"See the glowing \u201cTune in to AM 1390\u201d? There's a radio on the workbench.",
+      medium:"Turn it on and dial in AM 1390 — listen all the way through.",
+      big:"The broadcast spells a five-letter word for the workbench-drawer lock.",
+      answer:"The word is <strong>BRASS</strong>."
+    }
+  },
+  {
+    area:'Basement Workshop',
+    num:'10', title:'The Journal Cards', teaser:"Five cards, one correct order.",
+    hints:{
+      small:"Those five cards go in an order — ignore the smudged temperature/time/pressure numbers, they're red herrings.",
+      medium:"Each card's first lines name the step <em>before</em> it, so chain them: Resonance Chamber → Calibrate → Coil the Flux Array → Anchor the Temporal Drive → House the Assembly.",
+      big:"Each card hides a number — sometimes written (\u201csix,\u201d \u201cfive\u201d), sometimes as underlined letters spelling a number-word, and \u201cNothing\u201d counts as zero. Read them in order.",
+      answer:"The code is <strong>06165</strong>."
+    }
+  },
+  {
+    area:'Basement Workshop',
+    num:'11', title:'The pH Cabinet', teaser:"A little chemistry set behind a locked cabinet.",
+    hints:{
+      small:"Three bottles — A, B, C — test strips, and a pH chart on the wall. This is a chemistry test.",
+      medium:"Dip a fresh strip in each bottle, A then B then C, and match the color to the chart. Keep them in order. If bottle B looks purple, 10 is the last distinct shade before it all blends together — that's your number.",
+      big:"Each bottle gives you one number; read A, B, C in that order.",
+      answer:"A=7, B=10, C=4 → <strong>7104</strong>."
+    }
+  },
+  {
+    area:'Basement Workshop',
+    num:'12', title:'The Final Drawer', teaser:"One more drawer stands between you and the machine.",
+    hints:{
+      small:"7104 opens the final drawer in that basement workshop.",
+      medium:"Inside is a framed photo of the whole family, together again. Look closely at the frame itself, not just the picture.",
+      big:"That frame is heavier than it looks — it's meant to be carried, not left on a shelf.",
+      answer:"Bring the frame to the time machine — it's what releases the lock."
+    }
+  },
+  {
+    area:'The Finale', finale:true,
+    num:'13', title:'The Time Machine', teaser:"The moment you've been building toward.",
+    hints:{
+      small:"Look for a small painted gold picture-frame outline on the time machine's front panel — that's where the framed photo goes.",
+      medium:"Set the frame right into that outline. Once it releases, step inside — there are three numbered levers, meant to be pulled in order.",
+      big:"Pull 1, then 2, then 3.",
+      answer:"The third lever completes it — hold on."
+    }
+  },
+];
+
+const state = STATIONS.map(()=>0); // revealed count per station
+
+function render(){
+  const mount = document.getElementById('stationsMount');
+  const nav = document.getElementById('navScroll');
+  mount.innerHTML = '';
+  nav.innerHTML = '';
+
+  let lastArea = null;
+  STATIONS.forEach((st, i) => {
+    if(st.area !== lastArea){
+      const h = document.createElement('div');
+      h.className = 'area-heading';
+      h.textContent = st.area;
+      mount.appendChild(h);
+      lastArea = st.area;
+    }
+
+    const card = document.createElement('div');
+    card.className = 'station' + (st.finale ? ' finale' : '');
+    card.id = 'station-' + i;
+
+    const head = document.createElement('button');
+    head.className = 'station-head';
+    head.setAttribute('aria-expanded', 'false');
+    head.innerHTML = `
+      <span class="num mono">${st.num}</span>
+      <span class="head-text">
+        <h3>${st.title}</h3>
+        <p>${st.teaser}</p>
+      </span>
+      <span class="chev">▾</span>
+    `;
+    head.addEventListener('click', () => {
+      card.classList.toggle('open');
+      head.setAttribute('aria-expanded', card.classList.contains('open'));
+    });
+
+    const body = document.createElement('div');
+    body.className = 'station-body';
+
+    const gauge = document.createElement('div');
+    gauge.className = 'gauge';
+
+    const revealsWrap = document.createElement('div');
+    revealsWrap.className = 'reveals';
+
+    function paint(){
+      gauge.innerHTML = '';
+      revealsWrap.innerHTML = '';
+      const revealed = state[i];
+
+      TIERS.forEach((t, ti) => {
+        const btn = document.createElement('button');
+        btn.className = 'tier-btn' + (t.key === 'answer' ? ' answer' : '');
+        let dataState = 'locked';
+        if(ti < revealed) dataState = 'done';
+        else if(ti === revealed) dataState = 'ready';
+        btn.dataset.state = dataState;
+        btn.disabled = dataState !== 'ready';
+        btn.innerHTML = `<span class="lamp"></span><span class="label">${t.label}</span><span class="sub">${t.sub}</span>`;
+        btn.addEventListener('click', () => {
+          if(state[i] === ti){
+            state[i] = ti + 1;
+            paint();
+            paintNavDot();
+          }
+        });
+        gauge.appendChild(btn);
+      });
+
+      for(let ti=0; ti<revealed; ti++){
+        const t = TIERS[ti];
+        const item = document.createElement('div');
+        item.className = 'reveal-item' + (t.key === 'answer' ? ' is-answer' : '');
+        item.innerHTML = `<span class="tier-tag mono">${t.label}</span>${st.hints[t.key]}`;
+        revealsWrap.appendChild(item);
+      }
+
+      let resetBtn = body.querySelector('.reset-link');
+      if(revealed > 0){
+        if(!resetBtn){
+          resetBtn = document.createElement('button');
+          resetBtn.className = 'reset-link';
+          resetBtn.textContent = '↺ Reset hints for this puzzle';
+          resetBtn.addEventListener('click', () => {
+            state[i] = 0;
+            paint();
+            paintNavDot();
+          });
+          body.appendChild(resetBtn);
+        }
+      } else if(resetBtn){
+        resetBtn.remove();
+      }
+    }
+
+    body.appendChild(gauge);
+    body.appendChild(revealsWrap);
+    paint();
+
+    card.appendChild(head);
+    card.appendChild(body);
+    mount.appendChild(card);
+
+    const tab = document.createElement('button');
+    tab.className = 'nav-tab mono';
+    tab.textContent = st.num;
+    tab.title = st.title;
+    tab.addEventListener('click', () => {
+      card.classList.add('open');
+      head.setAttribute('aria-expanded','true');
+      card.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+    nav.appendChild(tab);
+
+    function paintNavDot(){
+      tab.classList.toggle('done', state[i] >= TIERS.length);
+    }
+    paintNavDot();
+  });
+}
+
+render();
+</script>
+</body>
+</html>
