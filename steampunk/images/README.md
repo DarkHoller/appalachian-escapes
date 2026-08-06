@@ -102,3 +102,6 @@ Codes: portraits 84607 | Morse DIALS | countertop 7824 | journal 06165 | pH 7104
 - 10-lever-2.jpg
 - 10-lever-3.jpg
 - 10-time-machine-control-panel.jpg
+
+## Audio (hosted at steampunk/audio/)
+- 09-radio-am1390-broadcast.mp3 - the AM 1390 broadcast (77 sec, mono 48kbps). SOLUTION-BEARING: contains the full story resolution and gives BRASS. Backup only - send/play if the radio prop won't work, or as an Answer-tier hint. Also embedded in the hint ledger's Radio station as a backup player.
